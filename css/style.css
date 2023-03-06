@@ -1,3 +1,5 @@
+/*//////////////////// Généralité du site ////////////////////*/
+
 body {
     margin: 0 auto;
     width: 1240px;
@@ -8,7 +10,10 @@ header {
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin: 20px 0 0 0;
 }
+
+/*//////////////////// Haut du site, Logo Titre et barre de recherche ////////////////////*/
 
 .logo {
     width: 50px;
@@ -52,59 +57,69 @@ header {
     position: absolute;
 }
 
-.section-btn {
+/*//////////////////// Bouton sélecteur ////////////////////*/
+
+#section-btn {
     display: flex;
 }
 
-#ingredients-list {
-    display: none;
+.btn-container {
+    display: flex;
+    align-items: center;
+    margin: 50px 50px 0 0;
 }
 
-#appareils-list {
+.searchbox-class {
     display: none;
-}
-
-#ustensiles-list {
-    display: none;
-}
-  
-#ingredients-list.show {
-    display: block;
-}
-  
-#ingredients-search {
-    display: none;
-}
-
-#appareils-search {
-    display: none;
-}
-
-#ustensiles-search {
-    display: none;
-}
-
-.research-btn {
     width: 170px;
     height: 69px;
     border: none;
     border-radius: 5px;
+    padding: 0 35px 0 25px;
 }
 
-#ingredients-btn {
+.btn-Title {
+    font-style: Lato;
+    width: 170px;
+    height: 69px;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    padding: 0 0 0 25px;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+#ingredientTitle, #ingredientSearchBox, #ingredientSearch {
     background-color: #3282F7;
 }
-
-#appareils-btn {
+#applianceTitle, #applianceSearchBox, #applianceSearch {
     background-color: #68D9A4;
 }
-
-#ustensiles-btn {
+#ustensilTitle, #ustensilSearchBox, #ustensilSearch {
     background-color: #ED6454;
 }
 
-.name-select {
-    font-size: 22px;
+#ingredientSearch, #applianceSearch, #ustensilSearch{
+    border: none;
+}
+
+#applianceSearch:focus, #ingredientSearch:focus, #ustensilSearch:focus {
+    outline: none;
+}
+#applianceSearch::placeholder, #ingredientSearch::placeholder, #ustensilSearch::placeholder {
     color: white;
-    font-style: Lato;
-    }
+}
+
+.arrow {
+    margin: 0 0 0 -30px;
+    transition: transform 0.5s;
+}
+
+.rotate180 {
+    transform: rotate(180deg);
+}
+
+/**/
