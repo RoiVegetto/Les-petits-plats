@@ -50,6 +50,10 @@ header {
     background-color: #E7E7E7;
 }
 
+.research:focus {
+    outline: none;
+}
+
 .search {
     width: 32px;
     top: 17.5px;
@@ -79,7 +83,7 @@ header {
 }
 
 .btn-Title {
-    font-style: Lato;
+    font-family: 'Lato', sans-serif;
     width: 170px;
     height: 69px;
     border: none;
@@ -122,4 +126,130 @@ header {
     transform: rotate(180deg);
 }
 
-/**/
+/*//////////////////// Listes des ingrédients, appareils et ustensiles ////////////////////*/
+
+.listBtn {
+  position: absolute;
+  margin: 60px 0 0 -25px;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 10px;
+  border-radius: 0 0 5px 5px;
+  padding: 0 0 0 25px;
+}
+
+#listIngredients {
+    background-color: #3282F7;
+}
+
+#listAppliances {
+  background-color: #68D9A4;
+}
+
+#listUstensils {
+  background-color: #ED6454;
+}
+
+.list-ingredients p {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  margin: 5px;
+}
+
+
+/*//////////////////// Section des cartes ////////////////////*/
+
+ul {
+    list-style: none;
+  }
+  
+  ul li {
+    font-size: 12px;
+  }
+  
+  #section-meal {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto 364px;
+    gap: 4%;
+    grid-row-gap: 20px;
+    margin-top: 50px;
+  }
+  
+
+  .recipe-card {
+    display: grid;
+    grid-template-areas:
+      "header header"
+      "information information";
+    font-family: 'Lato', sans-serif;
+  }
+  
+  .recipe-header {
+    grid-area: header;
+    background-color: #C7BEBE;
+    width: 380px;
+    height: 178px;
+    border-radius: 5px 5px 0 0;
+  }
+  
+  .recipe-information {
+    grid-area: information;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "name time"
+      "ingredients description";
+    width: 380px;
+    height: 186px;
+    background-color: #E7E7E7;
+    border-radius: 0 0 5px 5px;
+  }
+  
+  .recipe-name {
+    grid-area: name;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+  
+  .recipe-time {
+    grid-area: time;
+    display: flex;
+    justify-content: flex-end;
+    max-width: 200px;
+  }
+  
+  .time {
+    display: inline-block;
+    height: 20px;
+    padding: 0 5px 0 0 ;
+    background-color: #E7E7E7;
+
+  }
+  
+  .recipe-ingredients {
+    grid-area: ingredients;
+    list-style: none;
+    padding: 0;
+    font-size: 12px;
+    max-width: 180px;
+    margin: 0;
+  }
+  
+  .recipe-description {
+    font-size: 12px;
+    line-height: 1.2em;
+    height: calc(1.2em * 6);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    margin: 0;
+    width: 171px;
+  }
+  
