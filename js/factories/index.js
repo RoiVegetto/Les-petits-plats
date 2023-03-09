@@ -1,3 +1,5 @@
+import { recipes } from '/recipes.js';
+
 class RecipeCardFactory {
   static create(recipe) {
     const recipeCard = document.createElement('div');

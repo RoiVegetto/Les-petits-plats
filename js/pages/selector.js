@@ -1,3 +1,5 @@
+import { recipes } from '/recipes.js';
+
 /**
  * Dans un premier temps je vais chercher les sélecteur correspondant
  * Ensuite les addEventListener vont écouter les clic de la souris aux différents endroit et rende ce qui est voulu
