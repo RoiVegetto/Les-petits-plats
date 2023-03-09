@@ -254,5 +254,6 @@ ul {
     -webkit-box-orient: vertical;
     margin: 0;
     width: 171px;
+    padding: 0 0 0 10px;
   }
   

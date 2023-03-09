@@ -1,6 +1,4 @@
-import { recipes } from '/recipes.js';
-
-class RecipeCardFactory {
+export class RecipeCardFactory {
   static create(recipe) {
     const recipeCard = document.createElement('div');
     recipeCard.classList.add('recipe-card');
@@ -26,18 +24,4 @@ class RecipeCardFactory {
     `;
     return recipeCard;
   }
-}
-
-const recipesContainer = document.querySelector('#section-meal');
-
-if (recipesContainer) {
-  // Générer les cartes de recettes avec le factory et les ajouter à la balise div
-  recipes.forEach((recipe) => {
-    const recipeCard = RecipeCardFactory.create(recipe);
-    recipesContainer.appendChild(recipeCard);
-  });
-} else {
-  console.error(
-    "La balise div avec l'ID 'section-meal' n'existe pas dans le document"
-  );
 }
