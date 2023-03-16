@@ -136,7 +136,12 @@ header {
   grid-template-columns: repeat(3, 1fr);
   grid-column-gap: 10px;
   border-radius: 0 0 5px 5px;
-  padding: 0 0 0 25px;
+  padding: 0 0 10px 25px;
+}
+
+.listBtn p {
+  margin: 15px 0 0 0;
+  font-size: 18px;
 }
 
 #listIngredients {
@@ -204,7 +209,7 @@ ul {
       "name time"
       "ingredients description";
     width: 380px;
-    height: 186px;
+    height: 210px;
     background-color: #E7E7E7;
     border-radius: 0 0 5px 5px;
   }
