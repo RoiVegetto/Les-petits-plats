@@ -392,9 +392,11 @@ function createUstensilElement(ustensil) {
   }
   p.addEventListener('click', () => {
     const ustensilName = p.getAttribute('data-ustensil');
-    const selectedUstensilsContainer =
-      document.getElementById('selected-ustensils');
-    const selectedUstensilElement = createSelectedUstensilElement(ustensilName);
+    const selectedUstensilsContainer = document.getElementById(
+      'selected-ustensils'
+    );
+    const selectedUstensilElement =
+      createSelectedUstensilElement(ustensilName);
     selectedUstensilsContainer.appendChild(selectedUstensilElement);
     p.classList.add('hidden');
     const mainSearchValue = ustensilSearchInput.value.toLowerCase().trim();
@@ -424,6 +426,12 @@ function createUstensilList(searchValue = '') {
   });
 }
 
+ustensilSearchInput.addEventListener('input', () => {
+  const searchValue = ustensilSearchInput.value;
+  ustensilDiv.innerHTML = '';
+  createUstensilList(searchValue);
+});
+
 function toggleUstensilList() {
   if (ustensilDiv.style.display === 'none' || !ustensilDiv.style.display) {
     createUstensilList();
@@ -432,6 +440,12 @@ function toggleUstensilList() {
     ustensilDiv.style.display = 'none';
   }
 }
+
+ustensilSearchInput.addEventListener('click', function () {
+  if (ustensilSearchInput.value === 'Rechercher un ustensile') {
+    ustensilSearchInput.value = '';
+  }
+});
 
 ustensilTitle.addEventListener('click', function () {
   ustensilTitle.style.display = 'none';
@@ -446,18 +460,6 @@ ustensilTitle.addEventListener('click', function () {
 
 ustensilArrowIcon.addEventListener('click', function () {
   toggleUstensilList();
-});
-
-ustensilSearchInput.addEventListener('click', function () {
-  if (ustensilSearchInput.value === 'Rechercher un ustensile') {
-    ustensilSearchInput.value = '';
-  }
-});
-
-ustensilSearchInput.addEventListener('input', () => {
-  const searchValue = ustensilSearchInput.value;
-  ustensilDiv.innerHTML = '';
-  createUstensilList(searchValue);
 });
 
 document.addEventListener('click', function (event) {
@@ -509,10 +511,6 @@ function updateSelectedUstensils(ustensil, action) {
   const selectedIngredients = Array.from(
     document.querySelectorAll('.selected-ingredient')
   ).map((element) => element.textContent.slice(0, -1).toLowerCase());
-
-  const selectedAppliances = Array.from(
-    document.querySelectorAll('.selected-appliance')
-  ).map((element) => element.textContent.toLowerCase());
 
   const filteredRecipes = filterRecipes(
     '',

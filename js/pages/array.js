@@ -3,32 +3,60 @@ import { RecipeCardFactory } from '../factories/index.js';
 const mainSearchInput = document.getElementById('search-recipes');
 const recipesContainer = document.getElementById('section-meal');
 
-function filterSelectedItems(recipe, selectedIngredients, selectedAppliances, selectedUstensils) {
-  if (selectedIngredients.length === 0 && selectedAppliances.length === 0 && selectedUstensils.length === 0) {
+function filterSelectedItems(
+  recipe,
+  selectedIngredients,
+  selectedAppliances,
+  selectedUstensils
+) {
+  if (
+    selectedIngredients.length === 0 &&
+    selectedAppliances.length === 0 &&
+    selectedUstensils.length === 0
+  ) {
     return true;
   }
 
-  const ingredientsFilter = selectedIngredients.length === 0 ? true : selectedIngredients.every((selectedIngredient) => {
-    return recipe.ingredients.some((ingredient) => {
-      const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
-      return lowerCaseIngredient.includes(selectedIngredient);
-    });
-  });
+  const ingredientsFilter =
+    selectedIngredients.length === 0
+      ? true
+      : selectedIngredients.every((selectedIngredient) => {
+          return recipe.ingredients.some((ingredient) => {
+            const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
+            return lowerCaseIngredient.includes(selectedIngredient);
+          });
+        });
 
-  const appliancesFilter = selectedAppliances.length === 0 ? true : selectedAppliances.includes(recipe.appliance.toLowerCase());
+  const appliancesFilter =
+    selectedAppliances.length === 0
+      ? true
+      : selectedAppliances.includes(recipe.appliance.toLowerCase());
 
-  const ustensilsFilter = selectedUstensils.length === 0 ? true : selectedUstensils.every((selectedUstensil) => {
-    return recipe.ustensils.some((ustensil) => {
-      const lowerCaseUstensil = ustensil.toLowerCase();
-      return lowerCaseUstensil.includes(selectedUstensil);
-    });
-  });
+  const ustensilsFilter =
+    selectedUstensils.length === 0
+      ? true
+      : selectedUstensils.every((selectedUstensil) => {
+          return recipe.ustensils.some((ustensil) => {
+            const lowerCaseUstensil = ustensil.toLowerCase();
+            return lowerCaseUstensil.includes(selectedUstensil);
+          });
+        });
 
   return ingredientsFilter && appliancesFilter && ustensilsFilter;
 }
 
-export function filterRecipes(searchValue, selectedIngredients, selectedAppliances, selectedUstensils) {
-  if (!searchValue && selectedIngredients.length === 0 && selectedAppliances.length === 0 && selectedUstensils.length === 0) {
+export function filterRecipes(
+  searchValue,
+  selectedIngredients,
+  selectedAppliances,
+  selectedUstensils
+) {
+  if (
+    !searchValue &&
+    selectedIngredients.length === 0 &&
+    selectedAppliances.length === 0 &&
+    selectedUstensils.length === 0
+  ) {
     return recipes;
   }
 
@@ -39,7 +67,12 @@ export function filterRecipes(searchValue, selectedIngredients, selectedApplianc
       return false;
     }
 
-    return filterSelectedItems(recipe, selectedIngredients, selectedAppliances, selectedUstensils);
+    return filterSelectedItems(
+      recipe,
+      selectedIngredients,
+      selectedAppliances,
+      selectedUstensils
+    );
   });
 }
 
