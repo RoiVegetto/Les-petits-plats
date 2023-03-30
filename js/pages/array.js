@@ -107,11 +107,6 @@ export function renderRecipes(recipeList) {
       recipesContainer.appendChild(recipeCard);
     });
   }
-
-  recipeList.forEach((recipe) => {
-    const recipeCard = RecipeCardFactory.create(recipe);
-    recipesContainer.appendChild(recipeCard);
-  });
 }
 
 renderRecipes(recipes);
