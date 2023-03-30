@@ -59,10 +59,14 @@ export function filterRecipes(
   selectedUstensils
 ) {
   if (
-    !searchValue &&
-    selectedIngredients.length === 0 &&
-    selectedAppliances.length === 0 &&
-    selectedUstensils.length === 0
+    (searchValue.length < 3 &&
+      selectedIngredients.length === 0 &&
+      selectedAppliances.length === 0 &&
+      selectedUstensils.length === 0) ||
+    (!searchValue &&
+      selectedIngredients.length === 0 &&
+      selectedAppliances.length === 0 &&
+      selectedUstensils.length === 0)
   ) {
     return recipes;
   }
@@ -70,7 +74,11 @@ export function filterRecipes(
   return recipes.filter((recipe) => {
     const lowerCaseRecipeName = recipe.name.toLowerCase();
 
-    if (searchValue && !lowerCaseRecipeName.includes(searchValue)) {
+    if (
+      searchValue &&
+      searchValue.length >= 3 &&
+      !lowerCaseRecipeName.includes(searchValue)
+    ) {
       return false;
     }
 
@@ -88,6 +96,17 @@ export function renderRecipes(recipeList) {
   recipesContainer.innerHTML = '';
 
   recipeList.sort((a, b) => a.name.localeCompare(b.name));
+
+  if (recipeList.length === 0) {
+    const noRecipeMessage = document.createElement('p');
+    noRecipeMessage.textContent = 'Aucune recette disponible';
+    recipesContainer.appendChild(noRecipeMessage);
+  } else {
+    recipeList.forEach((recipe) => {
+      const recipeCard = RecipeCardFactory.create(recipe);
+      recipesContainer.appendChild(recipeCard);
+    });
+  }
 
   recipeList.forEach((recipe) => {
     const recipeCard = RecipeCardFactory.create(recipe);
