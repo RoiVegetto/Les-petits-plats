@@ -1,6 +1,13 @@
 import { recipes } from '/recipes.js';
 import { RecipeCardFactory } from '../factories/index.js';
-const mainSearchInput = document.getElementById('search-recipes');
+import {
+  selectedIngredients,
+  selectedAppliances,
+  selectedUstensils,
+  createIngredientList,
+} from './selector.js';
+
+export const mainSearchInput = document.getElementById('search-recipes');
 const recipesContainer = document.getElementById('section-meal');
 
 function filterSelectedItems(
@@ -92,6 +99,15 @@ renderRecipes(recipes);
 
 mainSearchInput.addEventListener('input', () => {
   const searchValue = mainSearchInput.value.toLowerCase().trim();
-  const filteredRecipes = filterRecipes(searchValue, [], [], []);
+  const filteredRecipes = filterRecipes(
+    searchValue,
+    selectedIngredients,
+    selectedAppliances,
+    selectedUstensils
+  );
   renderRecipes(filteredRecipes);
+
+  createIngredientList(searchValue);
+  createApplianceList(searchValue);
+  createUstensilList(searchValue);
 });

@@ -1,5 +1,5 @@
 import { recipes } from '/recipes.js';
-import { filterRecipes, renderRecipes } from './array.js';
+import { filterRecipes, renderRecipes, mainSearchInput } from './array.js';
 
 let ingredientContainer = document.getElementById('ingredientContainer');
 let ingredientTitle = document.getElementById('ingredientTitle');
@@ -7,7 +7,7 @@ let searchBox = document.getElementById('ingredientSearchBox');
 let searchInput = document.getElementById('ingredientSearch');
 let arrowIcon = document.getElementById('ingredientArrow');
 
-let selectedIngredients = [];
+export let selectedIngredients = [];
 let ingredientDiv = document.createElement('div');
 ingredientDiv.classList.add('listBtn');
 ingredientDiv.id = 'listIngredients';
@@ -54,7 +54,7 @@ function createIngredientElement(ingredient) {
   return p;
 }
 
-function createIngredientList(searchValue = '') {
+export function createIngredientList(searchValue = '') {
   ingredientDiv.innerHTML = '';
 
   const selectedIngredients = Array.from(
@@ -161,8 +161,9 @@ function updateSelectedIngredients(ingredient, action) {
     }
   }
 
+  const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
   const filteredRecipes = filterRecipes(
-    '',
+    mainSearchValue,
     selectedIngredients,
     selectedAppliances,
     selectedUstensils
@@ -182,7 +183,7 @@ let applianceSearchBox = document.getElementById('applianceSearchBox');
 let applianceSearchInput = document.getElementById('applianceSearch');
 let applianceArrowIcon = document.getElementById('applianceArrow');
 
-let selectedAppliances = [];
+export let selectedAppliances = [];
 let applianceDiv = document.createElement('div');
 applianceDiv.classList.add('listBtn');
 applianceDiv.id = 'listAppliances';
@@ -356,7 +357,7 @@ let ustensilSearchBox = document.getElementById('ustensilSearchBox');
 let ustensilSearchInput = document.getElementById('ustensilSearch');
 let ustensilArrowIcon = document.getElementById('ustensilArrow');
 
-let selectedUstensils = [];
+export let selectedUstensils = [];
 let ustensilDiv = document.createElement('div');
 ustensilDiv.classList.add('listBtn');
 ustensilDiv.id = 'listUstensils';
@@ -392,11 +393,9 @@ function createUstensilElement(ustensil) {
   }
   p.addEventListener('click', () => {
     const ustensilName = p.getAttribute('data-ustensil');
-    const selectedUstensilsContainer = document.getElementById(
-      'selected-ustensils'
-    );
-    const selectedUstensilElement =
-      createSelectedUstensilElement(ustensilName);
+    const selectedUstensilsContainer =
+      document.getElementById('selected-ustensils');
+    const selectedUstensilElement = createSelectedUstensilElement(ustensilName);
     selectedUstensilsContainer.appendChild(selectedUstensilElement);
     p.classList.add('hidden');
     const mainSearchValue = ustensilSearchInput.value.toLowerCase().trim();
