@@ -13,11 +13,11 @@ ingredientDiv.classList.add('listBtn');
 ingredientDiv.id = 'listIngredients';
 searchBox.appendChild(ingredientDiv);
 
-function getUniqueIngredients(selectedIngredients) {
+function getUniqueIngredients(selectedIngredients, filterRecipes) {
   let ingredientList = [];
   const uniqueIngredients = new Set();
 
-  for (let recipe of recipes) {
+  for (let recipe of filterRecipes) {
     for (let ingredient of recipe.ingredients) {
       const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
 
@@ -54,16 +54,21 @@ function createIngredientElement(ingredient) {
   return p;
 }
 
-export function createIngredientList(searchValue = '') {
+export function createIngredientList(searchValue = '', filterRecipes) {
   ingredientDiv.innerHTML = '';
+
+  filterRecipes = filterRecipes ? filterRecipes : recipes;
 
   const selectedIngredients = Array.from(
     document.querySelectorAll('.selected-ingredient')
   ).map((element) => element.textContent.slice(0, -1).toLowerCase());
 
-  const uniqueIngredients = getUniqueIngredients(selectedIngredients);
+  const uniqueIngredients = getUniqueIngredients(
+    selectedIngredients,
+    filterRecipes
+  );
   uniqueIngredients.sort((a, b) => a.localeCompare(b));
-
+  console.log(uniqueIngredients);
   const filteredIngredientList = uniqueIngredients.filter((ingredient) =>
     ingredient.toLowerCase().includes(searchValue.toLowerCase())
   );
@@ -79,13 +84,19 @@ export function createIngredientList(searchValue = '') {
 
 searchInput.addEventListener('input', () => {
   const searchValue = searchInput.value;
+  const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
+  const filteredRecipes = filterRecipes(
+    mainSearchValue,
+    selectedIngredients,
+    selectedAppliances,
+    selectedUstensils
+  );
   ingredientDiv.innerHTML = '';
-  createIngredientList(searchValue);
+  createIngredientList(searchValue, filteredRecipes);
 });
 
 function toggleIngredientList() {
   if (ingredientDiv.style.display === 'none' || !ingredientDiv.style.display) {
-    createIngredientList();
     ingredientDiv.style.display = 'grid';
   } else {
     ingredientDiv.style.display = 'none';
@@ -104,8 +115,6 @@ ingredientTitle.addEventListener('click', function () {
   searchInput.focus();
   searchInput.value = '';
   arrowIcon.classList.add('rotate180');
-  ingredientDiv.innerHTML = '';
-  createIngredientList();
   toggleIngredientList();
 });
 
@@ -189,11 +198,11 @@ applianceDiv.classList.add('listBtn');
 applianceDiv.id = 'listAppliances';
 applianceSearchBox.appendChild(applianceDiv);
 
-function getUniqueAppliances(selectedAppliances) {
+function getUniqueAppliances(selectedAppliances, filterRecipes) {
   let applianceList = [];
   const uniqueAppliances = new Set();
 
-  for (let recipe of recipes) {
+  for (let recipe of filterRecipes) {
     const lowerCaseAppliance = recipe.appliance.toLowerCase();
 
     if (
@@ -231,35 +240,49 @@ function createApplianceElement(appliance) {
   return p;
 }
 
-function createApplianceList(searchValue = '') {
+export function createApplianceList(searchValue = '', filterRecipes) {
   applianceDiv.innerHTML = '';
+
+  filterRecipes = filterRecipes ? filterRecipes : recipes;
 
   const selectedAppliances = Array.from(
     document.querySelectorAll('.selected-appliance')
   ).map((element) => element.textContent.toLowerCase());
 
-  const uniqueAppliances = getUniqueAppliances(selectedAppliances);
+  const uniqueAppliances = getUniqueAppliances(
+    selectedAppliances,
+    filterRecipes
+  );
   uniqueAppliances.sort((a, b) => a.localeCompare(b));
-
+  console.log(uniqueAppliances);
   const filteredApplianceList = uniqueAppliances.filter((appliance) =>
     appliance.toLowerCase().includes(searchValue.toLowerCase())
   );
 
   filteredApplianceList.forEach((appliance) => {
-    const applianceElement = createApplianceElement(appliance);
+    const applianceElement = createApplianceElement(
+      appliance,
+      selectedAppliances
+    );
     applianceDiv.appendChild(applianceElement);
   });
 }
 
 applianceSearchInput.addEventListener('input', () => {
-  const searchValue = applianceSearchInput.value;
-  applianceDiv.innerHTML = '';
-  createApplianceList(searchValue);
+  const applianceSearchvValue = applianceSearchInput.value;
+  const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
+  const filteredRecipes = filterRecipes(
+    mainSearchValue,
+    selectedIngredients,
+    selectedAppliances,
+    selectedUstensils
+  );
+  ingredientDiv.innerHTML = '';
+  createApplianceList(applianceSearchvValue, filteredRecipes);
 });
 
 function toggleApplianceList() {
   if (applianceDiv.style.display === 'none' || !applianceDiv.style.display) {
-    createApplianceList();
     applianceDiv.style.display = 'grid';
   } else {
     applianceDiv.style.display = 'none';
@@ -278,8 +301,6 @@ applianceTitle.addEventListener('click', function () {
   applianceSearchInput.focus();
   applianceSearchInput.value = '';
   applianceArrowIcon.classList.add('rotate180');
-  applianceDiv.innerHTML = '';
-  createApplianceList();
   toggleApplianceList();
 });
 
@@ -363,11 +384,11 @@ ustensilDiv.classList.add('listBtn');
 ustensilDiv.id = 'listUstensils';
 ustensilSearchBox.appendChild(ustensilDiv);
 
-function getUniqueUstensils(selectedUstensils) {
+function getUniqueUstensils(selectedUstensils, filterRecipes) {
   let ustensilList = [];
   const uniqueUstensils = new Set();
 
-  for (let recipe of recipes) {
+  for (let recipe of filterRecipes) {
     for (let ustensil of recipe.ustensils) {
       const lowerCaseUstensil = ustensil.toLowerCase();
 
@@ -405,14 +426,16 @@ function createUstensilElement(ustensil) {
   return p;
 }
 
-function createUstensilList(searchValue = '') {
+export function createUstensilList(searchValue = '', filterRecipes) {
   ustensilDiv.innerHTML = '';
+
+  filterRecipes = filterRecipes ? filterRecipes : recipes;
 
   const selectedUstensils = Array.from(
     document.querySelectorAll('.selected-ustensil')
   ).map((element) => element.textContent.toLowerCase());
 
-  const uniqueUstensils = getUniqueUstensils(selectedUstensils);
+  const uniqueUstensils = getUniqueUstensils(selectedUstensils, filterRecipes);
   uniqueUstensils.sort((a, b) => a.localeCompare(b));
 
   const filteredUstensilList = uniqueUstensils.filter((ustensil) =>
@@ -420,20 +443,26 @@ function createUstensilList(searchValue = '') {
   );
 
   filteredUstensilList.forEach((ustensil) => {
-    const ustensilElement = createUstensilElement(ustensil);
+    const ustensilElement = createUstensilElement(ustensil, selectedUstensils);
     ustensilDiv.appendChild(ustensilElement);
   });
 }
 
 ustensilSearchInput.addEventListener('input', () => {
-  const searchValue = ustensilSearchInput.value;
-  ustensilDiv.innerHTML = '';
-  createUstensilList(searchValue);
+  const ustensilSearchValue = ustensilSearchInput.value;
+  const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
+  const filteredRecipes = filterRecipes(
+    mainSearchValue,
+    selectedIngredients,
+    selectedAppliances,
+    selectedUstensils
+  );
+  ingredientDiv.innerHTML = '';
+  createUstensilList(ustensilSearchValue, filteredRecipes);
 });
 
 function toggleUstensilList() {
   if (ustensilDiv.style.display === 'none' || !ustensilDiv.style.display) {
-    createUstensilList();
     ustensilDiv.style.display = 'grid';
   } else {
     ustensilDiv.style.display = 'none';
@@ -452,8 +481,6 @@ ustensilTitle.addEventListener('click', function () {
   ustensilSearchInput.focus();
   ustensilSearchInput.value = '';
   ustensilArrowIcon.classList.add('rotate180');
-  ustensilDiv.innerHTML = '';
-  createUstensilList();
   toggleUstensilList();
 });
 

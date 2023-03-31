@@ -5,6 +5,8 @@ import {
   selectedAppliances,
   selectedUstensils,
   createIngredientList,
+  createApplianceList,
+  createUstensilList,
 } from './selector.js';
 
 export const mainSearchInput = document.getElementById('search-recipes');
@@ -95,6 +97,10 @@ export function renderRecipes(recipeList) {
   console.log('renderRecipes', recipeList);
   recipesContainer.innerHTML = '';
 
+  createIngredientList('', recipeList);
+  createApplianceList('', recipeList);
+  createUstensilList('', recipeList);
+
   recipeList.sort((a, b) => a.name.localeCompare(b.name));
 
   if (recipeList.length === 0) {
@@ -120,8 +126,4 @@ mainSearchInput.addEventListener('input', () => {
     selectedUstensils
   );
   renderRecipes(filteredRecipes);
-
-  createIngredientList(searchValue);
-  createApplianceList(searchValue);
-  createUstensilList(searchValue);
 });
