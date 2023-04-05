@@ -1,6 +1,8 @@
+// Importation des dépendances et des fonctions depuis d'autres fichiers
 import { recipes } from '/recipes.js';
 import { filterRecipes, renderRecipes, mainSearchInput } from './array.js';
 
+// Récupération des éléments du DOM
 let ingredientContainer = document.getElementById('ingredientContainer');
 let ingredientTitle = document.getElementById('ingredientTitle');
 let searchBox = document.getElementById('ingredientSearchBox');
@@ -13,6 +15,12 @@ ingredientDiv.classList.add('listBtn');
 ingredientDiv.id = 'listIngredients';
 searchBox.appendChild(ingredientDiv);
 
+/**
+ * Fonction pour obtenir les ingrédients uniques (non sélectionnés) des recettes filtrées
+ * @param {*} selectedIngredients
+ * @param {*} filterRecipes
+ * @returns
+ */
 function getUniqueIngredients(selectedIngredients, filterRecipes) {
   let ingredientList = [];
   const uniqueIngredients = new Set();
@@ -33,6 +41,11 @@ function getUniqueIngredients(selectedIngredients, filterRecipes) {
   return ingredientList;
 }
 
+/**
+ * Fonction pour créer un élément d'ingrédient
+ * @param {*} ingredient
+ * @returns
+ */
 function createIngredientElement(ingredient) {
   let p = document.createElement('p');
   p.textContent = ingredient;
@@ -54,6 +67,11 @@ function createIngredientElement(ingredient) {
   return p;
 }
 
+/**
+ * Fonction pour créer la liste d'ingrédients
+ * @param {*} searchValue
+ * @param {*} filterRecipes
+ */
 export function createIngredientList(searchValue = '', filterRecipes) {
   ingredientDiv.innerHTML = '';
 
@@ -82,6 +100,7 @@ export function createIngredientList(searchValue = '', filterRecipes) {
   });
 }
 
+// Écouteur d'événement pour mettre à jour la liste d'ingrédients lors de la saisie de la recherche
 searchInput.addEventListener('input', () => {
   const searchValue = searchInput.value;
   const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
@@ -95,6 +114,9 @@ searchInput.addEventListener('input', () => {
   createIngredientList(searchValue, filteredRecipes);
 });
 
+/**
+ * Fonction pour afficher ou masquer la liste d'ingrédients
+ */
 function toggleIngredientList() {
   if (ingredientDiv.style.display === 'none' || !ingredientDiv.style.display) {
     ingredientDiv.style.display = 'grid';
@@ -103,6 +125,7 @@ function toggleIngredientList() {
   }
 }
 
+// Plusieurs autres écouteurs d'événements pour gérer l'interaction avec les éléments de la liste d'ingrédients
 searchInput.addEventListener('click', function () {
   if (searchInput.value === 'Rechercher un ingrédient') {
     searchInput.value = '';
@@ -132,6 +155,11 @@ document.addEventListener('click', function (event) {
   }
 });
 
+/**
+ * Fonction pour créer un élément d'ingrédient sélectionné
+ * @param {*} ingredient
+ * @returns
+ */
 function createSelectedIngredientElement(ingredient) {
   const selectedIngredient = document.createElement('span');
   selectedIngredient.classList.add('selected-ingredient');
@@ -158,6 +186,11 @@ function createSelectedIngredientElement(ingredient) {
   return selectedIngredient;
 }
 
+/**
+ * Fonction pour mettre à jour la liste des ingrédients sélectionnés et mettre à jour les recettes filtrées
+ * @param {*} ingredient
+ * @param {*} action
+ */
 function updateSelectedIngredients(ingredient, action) {
   if (action === 'add') {
     selectedIngredients.push(ingredient.toLowerCase());

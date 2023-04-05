@@ -1,7 +1,12 @@
+/**
+ *  Classe RecipeCardFactory pour créer des cartes de recettes
+ */
 export class RecipeCardFactory {
+  // Méthode statique pour créer une carte de recette à partir d'un objet de recette
   static create(recipe) {
     const recipeCard = document.createElement('div');
     recipeCard.classList.add('recipe-card');
+    // Générer le contenu HTML de la carte de recette
     recipeCard.innerHTML = `
       <div class="recipe-header"></div>
       <div class="recipe-information">

@@ -1,3 +1,4 @@
+// Importation des dépendances et des fonctions depuis d'autres fichiers
 import { recipes } from '/recipes.js';
 import { RecipeCardFactory } from '../factories/index.js';
 import {
@@ -9,9 +10,19 @@ import {
   createUstensilList,
 } from './selector.js';
 
+// Récupération des éléments du DOM
 export const mainSearchInput = document.getElementById('search-recipes');
 const recipesContainer = document.getElementById('section-meal');
+const recipesNone = document.getElementById('no-recipes');
 
+/**
+ * Fonction pour filtrer les recettes en fonction des ingrédients, appareils et ustensiles sélectionnés
+ * @param {*} recipe
+ * @param {*} selectedIngredients
+ * @param {*} selectedAppliances
+ * @param {*} selectedUstensils
+ * @returns
+ */
 function filterSelectedItems(
   recipe,
   selectedIngredients,
@@ -54,6 +65,14 @@ function filterSelectedItems(
   return ingredientsFilter && appliancesFilter && ustensilsFilter;
 }
 
+/**
+ * Fonction pour filtrer les recettes en fonction de la valeur de recherche et des éléments sélectionnés
+ * @param {*} searchValue
+ * @param {*} selectedIngredients
+ * @param {*} selectedAppliances
+ * @param {*} selectedUstensils
+ * @returns
+ */
 export function filterRecipes(
   searchValue,
   selectedIngredients,
@@ -93,9 +112,14 @@ export function filterRecipes(
   });
 }
 
+/**
+ * Fonction pour afficher les recettes filtrées
+ * @param {*} recipeList
+ */
 export function renderRecipes(recipeList) {
   console.log('renderRecipes', recipeList);
   recipesContainer.innerHTML = '';
+  recipesNone.innerHTML = '';
 
   createIngredientList('', recipeList);
   createApplianceList('', recipeList);
@@ -106,7 +130,8 @@ export function renderRecipes(recipeList) {
   if (recipeList.length === 0) {
     const noRecipeMessage = document.createElement('p');
     noRecipeMessage.textContent = 'Aucune recette disponible';
-    recipesContainer.appendChild(noRecipeMessage);
+    noRecipeMessage.classList.add('no-recipe-message');
+    recipesNone.appendChild(noRecipeMessage);
   } else {
     recipeList.forEach((recipe) => {
       const recipeCard = RecipeCardFactory.create(recipe);
@@ -115,8 +140,10 @@ export function renderRecipes(recipeList) {
   }
 }
 
+// Appel initial pour afficher toutes les recettes
 renderRecipes(recipes);
 
+// Écouteur d'événement pour mettre à jour les recettes filtrées lors de la saisie de la recherche
 mainSearchInput.addEventListener('input', () => {
   const searchValue = mainSearchInput.value.toLowerCase().trim();
   const filteredRecipes = filterRecipes(

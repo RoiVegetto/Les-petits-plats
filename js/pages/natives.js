@@ -1,12 +1,21 @@
+// Importer les dépendances nécessaires
 import { recipes } from '/recipes.js';
 import { RecipeCardFactory } from '../factories/index.js';
+
+// Sélectionner les éléments du DOM nécessaires
 const mainSearchInput = document.getElementById('search-recipes');
 const recipesContainer = document.getElementById('section-meal');
 
-// Filtrer les recettes en fonction de la recherche de l'utilisateur
+/**
+ * Fonction pour filtrer les recettes en fonction de la valeur de recherche et des ingrédients sélectionnés
+ * @param {*} searchValue
+ * @param {*} selectedIngredients
+ * @returns
+ */
 export function filterRecipes(searchValue, selectedIngredients = []) {
   const filteredRecipes = [];
 
+  // Parcourir toutes les recettes et vérifier si elles correspondent aux critères de recherche
   for (let i = 0; i < recipes.length; i++) {
     const recipe = recipes[i];
     const ingredientsMatch = selectedIngredients.every((ingredient) =>
@@ -16,13 +25,12 @@ export function filterRecipes(searchValue, selectedIngredients = []) {
       searchValue.length < 3 ||
       matchInRecipe(recipe, 'name', searchValue) ||
       matchInRecipe(recipe, 'description', searchValue);
-
+    // Si la recette correspond aux critères, l'ajouter à la liste des recettes filtrées
     if (ingredientsMatch && searchValueMatch) {
       filteredRecipes.push(recipe);
     }
   }
-
-  // Update the ingredient list by removing already selected ingredients
+  // Mettre à jour la liste des ingrédients en fonction des ingrédients sélectionnés
   const ingredientList = document.querySelectorAll('.ingredient');
   for (let i = 0; i < ingredientList.length; i++) {
     const ingredient = ingredientList[i].getAttribute('data-ingredient');
@@ -36,13 +44,17 @@ export function filterRecipes(searchValue, selectedIngredients = []) {
   return filteredRecipes;
 }
 
-// Rendu des recettes
+/**
+ * Fonction pour afficher les recettes filtrées
+ * @param {*} recipeList
+ */
 export function renderRecipes(recipeList) {
   recipesContainer.innerHTML = '';
 
-  // Trier les recettes par ordre alphabétique en fonction du nom
+  // Trier les recettes par ordre alphabétique
   recipeList.sort((a, b) => a.name.localeCompare(b.name));
 
+  // Générer les cartes de recettes pour chaque recette de la liste et les ajouter au conteneur
   for (let i = 0; i < recipeList.length; i++) {
     const recipe = recipeList[i];
     const recipeCard = RecipeCardFactory.create(recipe);
@@ -50,7 +62,14 @@ export function renderRecipes(recipeList) {
   }
 }
 
-// Fonctions utilitaires
+/**
+ * Fonction pour vérifier si une valeur de recherche est présente dans un champ de recette (ou sous-champ)
+ * @param {*} recipe
+ * @param {*} field
+ * @param {*} searchValue
+ * @param {*} subfield
+ * @returns
+ */
 function matchInRecipe(recipe, field, searchValue, subfield) {
   if (subfield) {
     return recipe[field].some((item) =>
@@ -59,11 +78,13 @@ function matchInRecipe(recipe, field, searchValue, subfield) {
   }
   return recipe[field].toLowerCase().includes(searchValue);
 }
+
+// Obtenir la valeur de recherche initiale et filtrer les recettes
 const searchValue = mainSearchInput.value.toLowerCase().trim();
 const initialFilteredRecipes = filterRecipes(searchValue);
 renderRecipes(initialFilteredRecipes);
 
-// Ajouter un écouteur d'événement pour détecter les modifications de l'entrée de recherche principale
+// Ajouter un écouteur d'événement pour mettre à jour les recettes filtrées lors de la saisie de la recherche
 mainSearchInput.addEventListener('input', () => {
   const searchValue = mainSearchInput.value.toLowerCase().trim();
   const filteredRecipes = filterRecipes(searchValue);
