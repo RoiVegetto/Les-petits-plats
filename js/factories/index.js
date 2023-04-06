@@ -11,7 +11,7 @@ export class RecipeCardFactory {
       <div class="recipe-header"></div>
       <div class="recipe-information">
       <h2 class="recipe-name">${recipe.name}</h2>
-      <p class="recipe-time"><img src="/images/time.png" class="time"> ${
+      <p class="recipe-time"><img src="/images/time.png" class="time" alt="time"> ${
         recipe.time
       } min</p>
       <ul class="recipe-ingredients">
