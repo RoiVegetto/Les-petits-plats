@@ -1,6 +1,11 @@
 // Importer les dépendances nécessaires
 import { recipes } from '/recipes.js';
 import { RecipeCardFactory } from '../factories/index.js';
+import {
+  selectedIngredients,
+  selectedAppliances,
+  selectedUstensils,
+} from './selector.js';
 
 // Sélectionner les éléments du DOM nécessaires
 const mainSearchInput = document.getElementById('search-recipes');
@@ -12,19 +17,32 @@ const recipesContainer = document.getElementById('section-meal');
  * @param {*} selectedIngredients
  * @returns
  */
-export function filterRecipes(searchValue, selectedIngredients = []) {
+export function filterRecipes(
+  searchValue,
+  selectedIngredients = [],
+  selectedAppliances = [],
+  selectedUstensils = []
+) {
   const filteredRecipes = [];
 
   // Parcourir toutes les recettes et vérifier si elles correspondent aux critères de recherche
   for (let i = 0; i < recipes.length; i++) {
     const recipe = recipes[i];
-    const ingredientsMatch = selectedIngredients.every((ingredient) =>
-      matchInRecipe(recipe, 'ingredients', ingredient, 'ingredient')
-    );
+
+    let ingredientsMatch = true;
+    for (let j = 0; j < selectedIngredients.length; j++) {
+      const ingredient = selectedIngredients[j];
+      if (!matchInRecipe(recipe, 'ingredients', ingredient, 'ingredient')) {
+        ingredientsMatch = false;
+        break;
+      }
+    }
+
     const searchValueMatch =
       searchValue.length < 3 ||
       matchInRecipe(recipe, 'name', searchValue) ||
       matchInRecipe(recipe, 'description', searchValue);
+
     // Si la recette correspond aux critères, l'ajouter à la liste des recettes filtrées
     if (ingredientsMatch && searchValueMatch) {
       filteredRecipes.push(recipe);
@@ -87,6 +105,11 @@ renderRecipes(initialFilteredRecipes);
 // Ajouter un écouteur d'événement pour mettre à jour les recettes filtrées lors de la saisie de la recherche
 mainSearchInput.addEventListener('input', () => {
   const searchValue = mainSearchInput.value.toLowerCase().trim();
-  const filteredRecipes = filterRecipes(searchValue);
+  const filteredRecipes = filterRecipes(
+    searchValue,
+    selectedIngredients,
+    selectedAppliances,
+    selectedUstensils
+  );
   renderRecipes(filteredRecipes);
 });

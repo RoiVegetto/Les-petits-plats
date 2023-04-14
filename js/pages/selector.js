@@ -1,6 +1,5 @@
 // Importation des dépendances et des fonctions depuis d'autres fichiers
 import { recipes } from '/recipes.js';
-import { filterRecipes, renderRecipes, mainSearchInput } from './array.js';
 
 // Récupération des éléments du DOM
 let ingredientContainer = document.getElementById('ingredientContainer');
@@ -25,8 +24,11 @@ function getUniqueIngredients(selectedIngredients, filterRecipes) {
   let ingredientList = [];
   const uniqueIngredients = new Set();
 
-  for (let recipe of filterRecipes) {
-    for (let ingredient of recipe.ingredients) {
+  for (let i = 0; i < filterRecipes.length; i++) {
+    const recipe = filterRecipes[i];
+
+    for (let j = 0; j < recipe.ingredients.length; j++) {
+      const ingredient = recipe.ingredients[j];
       const lowerCaseIngredient = ingredient.ingredient.toLowerCase();
 
       if (
@@ -38,6 +40,7 @@ function getUniqueIngredients(selectedIngredients, filterRecipes) {
       }
     }
   }
+
   return ingredientList;
 }
 
@@ -86,18 +89,24 @@ export function createIngredientList(searchValue = '', filterRecipes) {
     filterRecipes
   );
   uniqueIngredients.sort((a, b) => a.localeCompare(b));
-  console.log(uniqueIngredients);
-  const filteredIngredientList = uniqueIngredients.filter((ingredient) =>
-    ingredient.toLowerCase().includes(searchValue.toLowerCase())
-  );
 
-  filteredIngredientList.forEach((ingredient) => {
+  const filteredIngredientList = [];
+
+  for (let i = 0; i < uniqueIngredients.length; i++) {
+    const ingredient = uniqueIngredients[i];
+    if (ingredient.toLowerCase().includes(searchValue.toLowerCase())) {
+      filteredIngredientList.push(ingredient);
+    }
+  }
+
+  for (let i = 0; i < filteredIngredientList.length; i++) {
+    const ingredient = filteredIngredientList[i];
     const ingredientElement = createIngredientElement(
       ingredient,
       selectedIngredients
     );
     ingredientDiv.appendChild(ingredientElement);
-  });
+  }
 }
 
 // Écouteur d'événement pour mettre à jour la liste d'ingrédients lors de la saisie de la recherche
@@ -119,6 +128,7 @@ searchInput.addEventListener('input', () => {
  */
 function toggleIngredientList() {
   if (ingredientDiv.style.display === 'none' || !ingredientDiv.style.display) {
+    createIngredientList();
     ingredientDiv.style.display = 'grid';
   } else {
     ingredientDiv.style.display = 'none';
@@ -240,7 +250,7 @@ function getUniqueAppliances(selectedAppliances, filterRecipes) {
 
     if (
       !uniqueAppliances.has(lowerCaseAppliance) &&
-      !selectedAppliances.includes(lowerCaseAppliance)
+      selectedAppliances.indexOf(lowerCaseAppliance) === -1
     ) {
       uniqueAppliances.add(lowerCaseAppliance);
       applianceList.push(recipe.appliance);
@@ -254,7 +264,7 @@ function createApplianceElement(appliance) {
   p.textContent = appliance;
   p.classList.add('appliance');
   p.setAttribute('data-appliance', appliance);
-  if (selectedAppliances.includes(appliance.toLowerCase())) {
+  if (selectedAppliances.indexOf(appliance.toLowerCase()) !== -1) {
     p.classList.add('hidden');
   }
   p.addEventListener('click', () => {
@@ -316,6 +326,7 @@ applianceSearchInput.addEventListener('input', () => {
 
 function toggleApplianceList() {
   if (applianceDiv.style.display === 'none' || !applianceDiv.style.display) {
+    createApplianceList();
     applianceDiv.style.display = 'grid';
   } else {
     applianceDiv.style.display = 'none';
@@ -428,7 +439,7 @@ function getUniqueUstensils(selectedUstensils, filterRecipes) {
 
       if (
         !uniqueUstensils.has(lowerCaseUstensil) &&
-        !selectedUstensils.includes(lowerCaseUstensil)
+        selectedUstensils.indexOf(lowerCaseUstensil) === -1
       ) {
         uniqueUstensils.add(lowerCaseUstensil);
         ustensilList.push(ustensil);
@@ -443,7 +454,7 @@ function createUstensilElement(ustensil) {
   p.textContent = ustensil;
   p.classList.add('ustensil');
   p.setAttribute('data-ustensil', ustensil);
-  if (selectedUstensils.includes(ustensil.toLowerCase())) {
+  if (selectedUstensils.indexOf(ustensil.toLowerCase()) !== -1) {
     p.classList.add('hidden');
   }
   p.addEventListener('click', () => {
@@ -485,6 +496,7 @@ export function createUstensilList(searchValue = '', filterRecipes) {
 ustensilSearchInput.addEventListener('input', () => {
   const ustensilSearchValue = ustensilSearchInput.value;
   const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
+
   const filteredRecipes = filterRecipes(
     mainSearchValue,
     selectedIngredients,
@@ -497,6 +509,7 @@ ustensilSearchInput.addEventListener('input', () => {
 
 function toggleUstensilList() {
   if (ustensilDiv.style.display === 'none' || !ustensilDiv.style.display) {
+    createUstensilList();
     ustensilDiv.style.display = 'grid';
   } else {
     ustensilDiv.style.display = 'none';
