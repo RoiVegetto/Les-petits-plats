@@ -94,11 +94,21 @@ export function filterRecipes(
 
   return recipes.filter((recipe) => {
     const lowerCaseRecipeName = recipe.name.toLowerCase();
+    const lowerCaseIngredients = recipe.ingredients.map((ingredient) =>
+      ingredient.ingredient.toLowerCase()
+    );
+    const lowerCaseDescription = recipe.description.toLowerCase();
+
+    const nameMatch = lowerCaseRecipeName.includes(searchValue);
+    const ingredientMatch = lowerCaseIngredients.some((ingredient) =>
+      ingredient.includes(searchValue)
+    );
+    const descriptionMatch = lowerCaseDescription.includes(searchValue);
 
     if (
       searchValue &&
       searchValue.length >= 3 &&
-      !lowerCaseRecipeName.includes(searchValue)
+      !(nameMatch || ingredientMatch || descriptionMatch)
     ) {
       return false;
     }

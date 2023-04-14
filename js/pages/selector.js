@@ -391,8 +391,9 @@ function updateSelectedAppliances(appliance, action) {
     document.querySelectorAll('.selected-ingredient')
   ).map((element) => element.textContent.slice(0, -1).toLowerCase());
 
+  const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
   const filteredRecipes = filterRecipes(
-    '',
+    mainSearchValue,
     selectedIngredients,
     selectedAppliances,
     selectedUstensils
@@ -571,8 +572,9 @@ function updateSelectedUstensils(ustensil, action) {
     document.querySelectorAll('.selected-ingredient')
   ).map((element) => element.textContent.slice(0, -1).toLowerCase());
 
+  const mainSearchValue = mainSearchInput.value.toLowerCase().trim();
   const filteredRecipes = filterRecipes(
-    '',
+    mainSearchValue,
     selectedIngredients,
     selectedAppliances,
     selectedUstensils
