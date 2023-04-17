@@ -17,37 +17,27 @@ const recipesContainer = document.getElementById('section-meal');
  * @param {*} selectedIngredients
  * @returns
  */
-export function filterRecipes(
-  searchValue,
-  selectedIngredients = [],
-  selectedAppliances = [],
-  selectedUstensils = []
-) {
+export function filterRecipes(searchValue, selectedIngredients = []) {
   const filteredRecipes = [];
 
   // Parcourir toutes les recettes et vérifier si elles correspondent aux critères de recherche
   for (let i = 0; i < recipes.length; i++) {
     const recipe = recipes[i];
 
-    let ingredientsMatch = true;
-    for (let j = 0; j < selectedIngredients.length; j++) {
-      const ingredient = selectedIngredients[j];
-      if (!matchInRecipe(recipe, 'ingredients', ingredient, 'ingredient')) {
-        ingredientsMatch = false;
-        break;
-      }
-    }
-
     const searchValueMatch =
       searchValue.length < 3 ||
       matchInRecipe(recipe, 'name', searchValue) ||
-      matchInRecipe(recipe, 'description', searchValue);
+      matchInRecipe(recipe, 'description', searchValue) ||
+      recipe.ingredients.some((ingredient) =>
+        ingredient.ingredient.toLowerCase().includes(searchValue.toLowerCase())
+      );
 
     // Si la recette correspond aux critères, l'ajouter à la liste des recettes filtrées
-    if (ingredientsMatch && searchValueMatch) {
+    if (searchValueMatch) {
       filteredRecipes.push(recipe);
     }
   }
+
   // Mettre à jour la liste des ingrédients en fonction des ingrédients sélectionnés
   const ingredientList = document.querySelectorAll('.ingredient');
   for (let i = 0; i < ingredientList.length; i++) {
